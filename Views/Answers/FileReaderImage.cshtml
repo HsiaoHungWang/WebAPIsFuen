@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewData["Title"] = "FileReaderImage";
+}
+
+<h1>FileReader 讀取圖片</h1>
+<input id="file1" type="file" multiple accept="image/*" />
+<div class="zone">
+</div>
+@section Scripts {
+    <script>
+        const myFile = document.querySelector("#file1");
+        const zone = document.querySelector(".zone");
+
+        myFile.addEventListener("change", event => {           
+            for (var i = 0, max = event.target.files.length; i < max; i++) {
+                fileViewer(event.target.files[i]);
+            }
+        });
+        function fileViewer(theFile) {
+            //透過FileReader物件中readAsDataURL()讀取theFile的圖
+            const reader = new FileReader();
+            reader.addEventListener("load", event => {
+                const eleImg = `<img src="${event.target.result}" class="thumb" />`;
+                zone.insertAdjacentHTML('afterbegin', eleImg);
+            })
+            reader.readAsDataURL(theFile);
+        }
+
+        zone.addEventListener("dragover", event => event.preventDefault());
+        zone.addEventListener("drop", event=>{
+            event.preventDefault();
+            for (var i = 0, max = event.dataTransfer.files.length; i < max; i++) {
+                fileViewer(event.dataTransfer.files[i]);
+            }
+        })
+    </script>
+}
+
+@section Styles{
+    <style>
+        .zone {
+            width: 600px;
+            height: 100px;
+            border: 1px solid green;
+            overflow-y: auto;
+        }
+
+        .thumb {
+            height: 80px;
+            margin: 10px;
+            box-shadow: 1px 2px 5px silver;
+        }
+    </style>
+}

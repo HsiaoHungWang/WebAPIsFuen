@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewData["Title"] = "FileReaderText";
+}
+
+<h1>FileReader 讀取文字</h1>
+<input id="file1" type="file" />
+<div class="zone">
+</div>
+
+
+@section Scripts {
+    <script>
+        const zone = document.querySelector('.zone');
+        const myFile = document.querySelector("#file1");
+        myFile.addEventListener("change", event => {
+            fileViewer(event.target.files[0]);
+        });
+        
+
+        function fileViewer(theFile) {
+           //透過FileReader物件中readAsText()讀取theFile的文字內容
+              
+        }
+       
+
+       
+        zone.addEventListener("dragover", event => event.preventDefault());
+        zone.addEventListener("drop", event=>{
+            event.preventDefault();
+            fileViewer(event.dataTransfer.files[0]);
+        })
+    </script>
+}
+
+@section Styles{
+    <style>
+        .zone {
+            width: 100%;
+            height: 200px;
+            border: 1px solid green;
+            overflow: auto;
+        }
+    </style>
+}

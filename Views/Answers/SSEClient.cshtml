@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewData["Title"] = "SSE";
+}
+<input type="button" id="button1" value="開始計時" class="btn btn-primary" />
+<input type="button" id="button2" value="停止計時" class="btn btn-warning" />
+<h1 id="clock">顯示伺服器端的時間</h1>
+@section Scripts{
+    <script>
+        const serverClock = document.querySelector('#clock');
+        const btnStart = document.querySelector('#button1');
+        const btnStop = document.querySelector('#button2');
+        let source;
+        btnStart.addEventListener("click", event => {
+            source = new EventSource('@Url.Content("~/answers/message")');   
+                source.onmessage = event => {
+                    console.log('Received event with id:', event.lastEventId);
+                    serverClock.innerHTML = event.data;
+                };
+            source.onopen = event => {
+                console.log('計時開始');
+            
+            }
+        })
+        btnStop.addEventListener('click', event => {          
+            if (source) {
+                source.close();
+                console.log('計時開始');
+            }
+        })
+      
+    </script>
+}

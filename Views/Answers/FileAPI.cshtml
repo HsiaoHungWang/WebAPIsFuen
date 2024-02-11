@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewData["Title"] = "FileAPI";
+}
+
+<h1>FileAPI</h1>
+<div class="zone">
+    <input id="file1" type="file" />
+</div>
+@section Scripts {
+    <script>
+        document.querySelector("#file1").addEventListener("change", event=> fileInfo(event.target.files[0]));
+        function fileInfo(theFile) {
+            //theFile -> File物件
+            console.log(theFile.name); //檔案名稱
+            console.log(theFile.type); //檔案類型
+            console.log(theFile.size); //檔案大小
+            //lastModified 屬性返回的是文件的最後修改時間，表示為從 1970 年 1 月 1 日 00:00:00 UTC 起的毫秒數。
+            console.log(theFile.lastModified); 
+            console.log(formatLastModified(theFile.lastModified)); 
+        }
+
+        const zone = document.querySelector(".zone");
+        zone.addEventListener("dragover", event => event.preventDefault());
+
+        zone.addEventListener("drop", event => {
+            event.preventDefault();
+            fileInfo(event.dataTransfer.files[0]);
+        })
+
+        //傳入毫秒，轉成 yyyy/mm/dd hh:mm:ss 回傳
+        function formatLastModified(lastModified) {
+            const date = new Date(lastModified);
+
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, '0'); // 月份從0開始，需要加1，並補零
+            const day = date.getDate().toString().padStart(2, '0'); // 補零
+            const hours = date.getHours().toString().padStart(2, '0'); // 補零
+            const minutes = date.getMinutes().toString().padStart(2, '0'); // 補零
+            const seconds = date.getSeconds().toString().padStart(2, '0'); // 補零
+
+            return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+        }
+
+    </script>
+}
+
+@section Styles{
+    <style>
+        .zone {
+            width: 100%;
+            height: 200px;
+            border: 1px solid green;
+        }
+    </style>
+}

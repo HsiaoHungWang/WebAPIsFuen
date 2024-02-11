@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewData["Title"] = "DragAndDrop";
+}
+
+<h1>DragAndDrop</h1>
+<div id="zone1" class="zone">
+    <div id="d1" class="item">Item1</div>
+    <div id="d2" class="item">Item2</div>
+    <div id="d3" class="item">Item3</div>
+    <a id="a1" href="https://www.ispan.com.tw" class="item">iSpan</a>
+    <img src="~/images/bunny.png" class="item" id="img1">
+</div>
+<div id="zone2" class="zone"></div>
+
+@section Scripts {
+    <script>
+        const divs = document.querySelectorAll('.item');
+        const zones = document.querySelectorAll('.zone');
+
+        
+     
+    </script>
+}
+
+@section Styles{
+    <style>
+        .zone {
+            width: 600px;
+            height: 150px;
+            margin: 10px;
+            border: 1px solid green;
+        }
+
+        .item {
+            width: 80px;
+            height: 40px;
+            float: left;
+            background-color: gray;
+            margin: 5px;
+            text-align: center;
+        }
+
+        .over {
+            border: 3px red dashed;
+        }
+
+        a{color:white}
+        a:hover{
+            color:white;
+            text-decoration:none;
+        }
+    </style>
+}

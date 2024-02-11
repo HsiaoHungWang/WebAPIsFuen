@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewData["Title"] = "WebStorage";
+}
+
+<h1>WebStorage</h1>
+<input type="text" placeholder="local storage" id="txt1" />
+<input type="text" placeholder="session storage" id="txt2" />
+<input type="button" value="Save" id="buttonSave">
+<input type="button" value="Get" id="buttonGet">
+<input type="button" value="Remove" id="buttonRemove">
+<div id="div1"></div>
+
+@section Scripts{
+    <script>
+        const btnSave = document.querySelector("#buttonSave");
+        const btnGet = document.querySelector("#buttonGet");
+        const btnRemove = document.querySelector("#buttonRemove");
+        const txtLocal = document.querySelector("#txt1");
+        const txtSession = document.querySelector("#txt2");
+        const myDiv = document.querySelector("#div1");
+
+        btnSave.addEventListener("click",  ()=>{
+            //資料寫入localStorage中
+
+            //資料寫入sessionStorage中
+
+        })
+
+        btnGet.addEventListener("click", ()=> {
+            //讀出localStorage與sessionStorage中的資料，顯示在div中
+
+            //let str = "";
+            //讀取多筆資料
+        
+        })
+
+        btnRemove.addEventListener("click", ()=>{
+            //刪除單筆資料
+           
+            //清除所有資料
+           
+        })
+    </script>
+}
