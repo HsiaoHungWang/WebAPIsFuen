@@ -135,6 +135,19 @@ namespace WebAPIsFuen.Controllers
             return View();
         }
 
+        public IActionResult WebWorker()
+        {
+            return View();
+        }
+        public IActionResult SharedWorker1()
+        {
+            return View();
+        }
+        public IActionResult SharedWorker2()
+        {
+            return View();
+        }
+
 
     }
 }

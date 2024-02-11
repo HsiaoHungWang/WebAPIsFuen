@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewData["Title"] = "SharedWorker1";
+}
+
+<h1>SharedWorker1</h1>
+<input type="button" id="buttonSend" value="send">
+<div id="div1"></div>
+@section Scripts {
+    <script>
+        document.querySelector("#buttonSend").addEventListener("click", function () {
+            //建立SharedWorker物件
+            var worker = new SharedWorker("/js/SharedWorker.js");
+            //傳送資料給worker
+            worker.port.start();
+            worker.port.postMessage({ "name": "Eric" });
+
+            //接收worker傳過來的資料
+            worker.port.addEventListener("message", function (event) {
+                document.querySelector("#div1").innerHTML = event.data
+            })
+        })
+    </script>
+}
