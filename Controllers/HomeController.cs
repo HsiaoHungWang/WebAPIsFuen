@@ -97,6 +97,11 @@ namespace WebAPIsFuen.Controllers
             return View();
         }
 
+        public IActionResult Geolocation()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

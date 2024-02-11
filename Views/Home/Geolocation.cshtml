@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewData["Title"] = "Geolocation";
+}
+
+<h1>Geolocation</h1>
+<div id="map"></div>
+
+@section Scripts{
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+
+
+
+        // const map = L.map('map').setView([latitude, longitude], 13)
+        // //
+        // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        //     attribution: '© OpenStreetMap contributors'
+        // }).addTo(map);
+        // //設定Marker
+        // L.marker([latitude, longitude], {
+        //     title: "現在位置",
+        //     opacity: 1
+        // }).addTo(map)
+        // //  .bindPopup('現在位置').openPopup();
+
+    </script>
+}
+
+@section Styles {
+    <style>
+        #map {
+            height: 400px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+}
