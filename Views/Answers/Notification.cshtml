@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewData["Title"] = "Notification";
+}
+
+<h1>Notification</h1>
+<button id="button1" class="btn btn-primary">桌面提醒功能</button>
+
+
+@section Scripts{
+    <script>
+        document.querySelector("#button1").addEventListener("click", notifyMe);
+        let notification;
+        function notifyMe() {
+            console.log(Notification.permission);
+            if (Notification.permission === "granted") {
+                console.log("同意!!");
+
+                notifiction = new Notification("系統通知", {
+                    body: "停機公告 13:00-14:00",
+                    tag: "system",
+                    icon: "/images/loading.gif"
+                })
+                notifiction.addEventListener("show", function () {
+                   console.log("show");
+                    window.setTimeout("notifiction.close()", 3000);
+                })
+                notifiction.addEventListener("close", function () {
+                    console.log("close");
+                })
+                notifiction.addEventListener("click", function () {
+                    console.log("click");
+                })
+            } else if (Notification.permission === "default") {
+                getPermission(notifyMe);
+            } else {
+                console.log("不同意!!");
+            }
+
+         
+        }
+
+        function getPermission(cb) {
+            Notification.requestPermission(cb);
+        }
+    </script>
+}
