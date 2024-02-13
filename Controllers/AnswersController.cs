@@ -125,6 +125,11 @@ namespace WebAPIsFuen.Controllers
             return View(); 
         }
 
+        public IActionResult WebSocket()
+        {
+            return View();
+        }
+
         public IActionResult Chatroom()
         {
             return View();

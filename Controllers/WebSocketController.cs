@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Concurrent;
+using System.Net.Sockets;
 using System.Net.WebSockets;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WebAPIsFuen.Controllers
 {
@@ -24,7 +27,9 @@ namespace WebAPIsFuen.Controllers
             if (HttpContext.WebSockets.IsWebSocketRequest)
             {
                 using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
+                WebSockets.TryAdd(webSocket.GetHashCode(), webSocket);  //將連接進來的使用者加到WebSockets集合(ConcurrentDictionary)
                 await ProcessWebSocket(webSocket);
+                
             }
             else
             {
@@ -36,61 +41,60 @@ namespace WebAPIsFuen.Controllers
         public async Task ProcessWebSocket(WebSocket webSocket)
         {
            
-            WebSockets.TryAdd(webSocket.GetHashCode(), webSocket);  //將連接進來的使用者加到WebSockets集合(ConcurrentDictionary)
+           
             var buffer = new byte[1024 * 4]; //建立一個4k大小的RAM空間，用來存放要傳送的資料
+
             //將接收到資料塞進buffer中，不做取消的處理
             var res = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-            string? userName = "匿名";
+            //string? userName = null;
             while (!res.CloseStatus.HasValue)
             {
-               // UserName = "匿名";
-               //把接收到的資料讀出來
-                var message = Encoding.UTF8.GetString(buffer, 0, res.Count); //res是接收到的內容
-                if(!string.IsNullOrEmpty(message))
+                string json = Encoding.UTF8.GetString(buffer, 0, res.Count);
+                var options = new JsonSerializerOptions()
                 {
-                    if(message.StartsWith("/USER "))
-                    {
-                        userName = message.Substring(6);
-                    }
-                    //Broadcast($"{userName}說:{message}");
-                    Broadcast($"{message}");
+                    PropertyNameCaseInsensitive = true
+                };
+                Message? receivedMessage = JsonSerializer.Deserialize<Message>(json, options);
+               
+                if (receivedMessage != null)
+                {
+                  //  userName = receivedMessage.UserName;
+                    receivedMessage.Timestamp = DateTime.Now;
+                    string updatedJson = JsonSerializer.Serialize(receivedMessage);
+                    Broadcast(updatedJson); //接收到的資料傳給Broadcase自訂函式，在此函式中廣播給所有連線的使用者
                 }
+
+
                 res = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-
-                //JObject data = JObject.Parse(message);
-                //string? Name = Convert.ToString(data["userName"]);
-                //string? Message = $"{Convert.ToString(data["message"])} at {DateTime.Now}";
-                //if (!string.IsNullOrEmpty(Name)) { UserName = Name; }
-                //Broadcast(JsonConvert.SerializeObject(new { userName = UserName, message = Message }));
-
-
             }
             //websocket關閉
             await webSocket.CloseAsync(res.CloseStatus.Value, res.CloseStatusDescription, CancellationToken.None);
-            //websocket斷線
+            //從WebSockets集合(ConcurrentDictionary)移除離線使用者
             WebSockets.TryRemove(webSocket.GetHashCode(), out var removed);
-            Broadcast(JsonConvert.SerializeObject(new {userName = userName, message="離開聊天室"}));
-            //Broadcase($"{userName}離開聊天室!!");
 
+
+          
         }
 
 
- //定義Broadcase函式
+        //定義Broadcase函式
         public void Broadcast(string message)
-        {
-            //var buff = Encoding.UTF8.GetBytes($"{message} at {DateTime.Now}");
-            
-            var buff = Encoding.UTF8.GetBytes(message); 
-            var data = new ArraySegment<byte>(buff, 0, buff.Length);
+        {            
             //平行運算
             Parallel.ForEach(WebSockets.Values, async (webSocket) =>
             {
                 if (webSocket.State == WebSocketState.Open)
-                {
-                    //true 是 endofmessage
-                    await webSocket.SendAsync(data, WebSocketMessageType.Text, true, CancellationToken.None);
+                {                   
+                    await webSocket.SendAsync(Encoding.UTF8.GetBytes(message), WebSocketMessageType.Text, true, CancellationToken.None);
                 }
             });
         }
     }
+}
+public class Message
+{
+  
+    public string? UserName { get; set; } 
+    public string? MessageContent { get; set; }
+    public DateTime Timestamp { get; set; }
 }

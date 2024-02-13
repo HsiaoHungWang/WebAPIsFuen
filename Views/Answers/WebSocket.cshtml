@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewData["Title"] = "WebSocket";
+}
+
+<h1>WebSocket</h1>
+<div id="div1"></div>
+
+@section Scripts{
+    <script>
+        const host = "wss://echo.websocket.org/";
+        const myDiv = document.querySelector('#div1');
+
+        const socket = new WebSocket(host);
+
+        //WebSocket 連線成功時
+        socket.onopen = (event) => {
+            const eleP = document.createElement('p');
+            eleP.textContent = '連線成功!!';
+            myDiv.insertAdjacentElement("beforeend", eleP);
+            socket.send("Hello Socket!!");  //傳送資料
+        }
+        // WebSocket Server 有回傳資料時
+        socket.onmessage = event => {
+            const eleP = document.createElement('p');
+            eleP.textContent = `來自於 SocketServer 的資料： ${event.data}`;
+            myDiv.insertAdjacentElement("beforeend", eleP)
+            socket.close();  //關閉WebSocket的連線
+        }
+
+        // WebSocket連線關閉時
+        socket.onclose = even => {
+            const eleP = document.createElement('p');
+            eleP.textContent = '連線關閉!!';
+        myDiv.insertAdjacentElement("beforeend", eleP)
+        } ;
+
+        // WebSocket錯誤發生時
+        socket.onerror = event => {
+            const eleP = document.createElement('p');
+            eleP.textContent = '有錯誤!!';
+        myDiv.insertAdjacentElement("beforeend", eleP);
+        } 
+
+       
+
+    </script>
+}
