@@ -135,6 +135,11 @@ namespace WebAPIsFuen.Controllers
             return View();
         }
 
+        public IActionResult Clipboard()
+        {
+            return View();
+        }
+
         public IActionResult Notification()
         {
             return View();

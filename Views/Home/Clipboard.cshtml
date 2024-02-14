@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewData["Title"] = "Clipboard";
+}
+
+<h1>Clipboard</h1>
+
+<div class="card">
+    <div class="card-header  d-flex justify-content-between">
+        <h5>範例程式</h5>
+        <button id="copy" class="btn btn-primary" title="copy to clipboard"><i class="bi bi-clipboard-fill"></i></button>
+    </div>
+    <div class="card-body">
+        <code id="codeCopy" style ="white-space: pre;">
+            const copy = async () => {
+              let copyText = document.querySelector("#codeCopy").textContent;
+              await navigator.clipboard.writeText(copyText);
+            }
+       </code>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header  d-flex justify-content-between">
+        <h5>貼上程式</h5>
+        <button id="paste" class="btn btn-primary" title="copy to clipboard"><i class="bi bi-clipboard-check-fill"></i></button>
+    </div>
+    <div class="card-body">
+        <code id="codePaste" style="white-space: pre;">
+          
+        </code>
+    </div>
+
+@section Scripts {
+    <script>
+        const btnCopy = document.querySelector('#copy');
+        const btnPaste = document.querySelector('#paste');
+        
+            //todo 寫個 copy function 透過 Clipboard API 進行複製
+
+            //todo 寫個 paste function 透過 Clipboard API 完成貼上
+      
+
+        btnCopy.addEventListener('click', copy);
+        btnPaste.addEventListener('click', paste);
+    </script>
+}
+
+@section Styles{
+    <style>
+
+    </style>
+}
