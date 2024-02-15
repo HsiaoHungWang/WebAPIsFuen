@@ -14,7 +14,7 @@ namespace WebAPIsFuen.Controllers
         {
             return View();
         }
-        public IActionResult FormPractie()
+        public IActionResult FormPractice()
         {
             return View();
         }
