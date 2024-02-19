@@ -4,4 +4,67 @@
 }
 
 <h1>Canvas</h1>
+<canvas id="myCanvas" width="400" height="300"></canvas>
+
+@section Styles {
+    <style>
+        #myCanvas {
+            border:1px solid green;
+        }
+    </style>
+}
+@section Scripts{
+    <script>
+        const canvas = document.querySelector('#myCanvas');
+        const context = canvas.getContext("2d"); //產生繪圖物件
+
+        context.lineWidth = 3;  //線條寬度
+        context.strokeStyle = "green"; //線條顏色
+        context.fillStyle = "red"; //填滿顏色
+
+       //  //矩形
+       //  context.fillRect(100, 50, 200, 90);
+       //  context.strokeRect(100, 160, 200, 90);
+       //  context.clearRect(150, 70, 100, 50);
+
+       //  //清除整個Canvas的內容
+       // // context.clearRect(0, 0, canvas.width, canvas.height);
+
+       // //線
+       //  context.beginPath();
+       //  context.moveTo(60, 140);
+       //  context.lineTo(60, 240);
+       //  context.lineTo(140, 240);
+       // // context.lineTo(60, 140);
+       //  context.closePath();
+       //  context.stroke();
+       //  context.fill();
+
+       //弧與圓
+        // const x = canvas.width / 2;
+        // const y = canvas.height / 2;
+        // const r = 100;
+        // const start = Math.PI * 1;
+        // const end = Math.PI * 1.5;
+        // const start1 = Math.PI * 0;
+        // const end1 = Math.PI * 2;
+
+        // context.moveTo(x, y);
+        // context.arc(x, y, r, start, end, false);
+        // context.fill();
+
+        //圖
+        const imageObj = new Image();
+        imageObj.src = "/images/cars.jpg";
+        imageObj.addEventListener('load', () => {
+          //  context.drawImage(imageObj, 0, 0);
+          //  context.drawImage(imageObj, 0, 0,200,150);
+            context.drawImage(imageObj, 185,85,195,179,100,100,195,179);
+        })
+
+
+
+
+    </script>
+}
 
