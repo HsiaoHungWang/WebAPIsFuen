@@ -28,7 +28,7 @@ namespace WebAPIsFuen.Controllers
         {
             return View();
         }
-        public IActionResult Vedio()
+        public IActionResult Video()
         {
             return View();
         }
