@@ -34,6 +34,7 @@
             fy = y + r / 2 * (Math.sin(startAngle + endAngle / 2));
             context.fillStyle = "black";
             context.fillText(Math.round(100 * datas[i].value / 100) + '%', fx, fy);
+
             startAngle += endAngle;
         }
 

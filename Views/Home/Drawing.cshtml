@@ -42,27 +42,33 @@
 
         canvas.addEventListener("mousedown", function (evt) {
             flag = true;
+           // console.log(evt.offsetX, evt.offsetY);
             //todo 開始一個新路徑，產生後再使用繪圖指令來設定路徑。
-           
+            context.beginPath();
             
             //todo 設定線條的顏色
+            context.strokeStyle = c.value;
            
             //todo 設定線條寬度
+            context.lineWidth = cw.value;
          
 
-            //todo 移動畫筆到指定的滑鼠點選的位置上
+            //todo 移動畫筆到指定的滑鼠點選的位置上 moveTo
             //使用event.offsetX 取得滑鼠的x軸座標點
             //使用event.offsetY 取得滑鼠的y軸座標點
             //canvas左上角為0,0
+            context.moveTo(event.offsetX, event.offsetY);
            
            
         })
 
         canvas.addEventListener("mousemove", function (evt) {
+         
             if (flag) {
-                //todo 從目前繪圖點畫一條直線到滑鼠點選的位置上
-              
-                //todo 畫出圖形的線條
+                //todo 從目前繪圖點畫一條直線到滑鼠點選的位置上 lineTo()
+                context.lineTo(evt.offsetX, evt.offsetY);
+                //todo 畫出圖形的線條 stroke()
+                context.stroke();
              
             }
         })
@@ -72,6 +78,7 @@
        
         theFile.addEventListener('change', function () {
             const imageObj = new Image();
+           // imageObj.addEventListener('load', function () { })
             imageObj.onload = function () {
                 for (var i = 0; i < 20; i++) {
                     var w = Math.floor(Math.random() * 40);    //設定繪製圖型的大小
@@ -79,7 +86,7 @@
                     var y = Math.floor(Math.random() * canvas.height); //設定繪製圖型位置的y座標
 
                     //todo 將選取的圖,放大縮小後繪到canvas中
-                   
+                    context.drawImage(imageObj, x, y, w, w);
                 }
             }
 
