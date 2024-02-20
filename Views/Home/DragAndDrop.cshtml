@@ -31,6 +31,7 @@
 
             const sObj = document.querySelector(`#${sId}`);
             event.target.appendChild(sObj);
+            event.target.classList.remove('over');
 
         }
 
@@ -41,6 +42,14 @@
 
         //每一個要能夠放下元素的區域，都要綁定Dragover及Drop事件
         zones.forEach(zone => {
+            zone.addEventListener('dragenter', event => {
+                event.preventDefault();
+                event.target.classList.add('over');
+            })
+            zone.addEventListener('dragleave', event => {
+                event.preventDefault();
+                event.target.classList.remove('over');
+            })
             zone.addEventListener('dragover', event => event.preventDefault());
             zone.addEventListener('drop', dropHandler);
         })
