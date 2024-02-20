@@ -20,7 +20,7 @@
 
         context.lineWidth = 3;  //線條寬度
         context.strokeStyle = "green"; //線條顏色
-        context.fillStyle = "red"; //填滿顏色
+        context.fillStyle = "green"; //填滿顏色
 
        //  //矩形
        //  context.fillRect(100, 50, 200, 90);
@@ -41,17 +41,17 @@
        //  context.fill();
 
        //弧與圓
-        // const x = canvas.width / 2;
-        // const y = canvas.height / 2;
-        // const r = 100;
-        // const start = Math.PI * 1;
-        // const end = Math.PI * 1.5;
-        // const start1 = Math.PI * 0;
-        // const end1 = Math.PI * 2;
+        const x = canvas.width / 2;
+        const y = canvas.height / 2;
+        const r = 100;
+        const start = Math.PI * 1;
+        const end = Math.PI * 1.5;
+        const start1 = Math.PI * 0;
+        const end1 = Math.PI * 2;
 
-        // context.moveTo(x, y);
-        // context.arc(x, y, r, start, end, false);
-        // context.fill();
+        context.moveTo(x, y);
+        context.arc(x, y, r, start1, end1, false);
+        context.fill();
 
         //圖
         // const imageObj = new Image();
@@ -62,13 +62,13 @@
         //     context.drawImage(imageObj, 185,85,195,179,100,100,195,179);
         // })
 
-        //字
-        const x = canvas.width / 2;
-        const y = canvas.height / 2;
-        context.font = "48pt arial";
-        context.textAlign = "center";
-       // context.fillText("Hello Canvas!!", x, y);
-        context.strokeText("Hello Canvas!!", x, y);
+       //  //字
+       //  const x = canvas.width / 2;
+       //  const y = canvas.height / 2;
+       //  context.font = "48pt arial";
+       //  context.textAlign = "center";
+       // // context.fillText("Hello Canvas!!", x, y);
+       //  context.strokeText("Hello Canvas!!", x, y);
 
 
 
