@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using WebAPIsFuen.Models;
@@ -7,10 +8,12 @@ namespace WebAPIsFuen.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IWebHostEnvironment webHostEnvironment)
         {
             _logger = logger;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
@@ -43,6 +46,39 @@ namespace WebAPIsFuen.Controllers
         public IActionResult Drawing()
         {
             return View();
+        }
+
+        //接收小畫家傳過來的圖
+        [HttpPost]
+        //Querystring URL?id=1&item=abc
+        //FormData > <form>
+        public IActionResult DrawingUpload([FromBody]Base64ImageDTO _dto)
+        {
+            if(_dto.ImageBase64 != null)
+            {
+                string fileName = "";
+                if (string.IsNullOrEmpty(_dto.FileName))
+                {
+                    fileName = $"{Guid.NewGuid()}.png";
+                }
+                else
+                {
+                    fileName = _dto.FileName ;
+                }
+                //將base64字串轉成Byte[]
+                var bytes = Convert.FromBase64String(_dto.ImageBase64);
+
+                //產生檔案儲存的實際路徑
+                string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", fileName);
+
+                //將Byte[]儲存成一個檔案
+                System.IO.File.WriteAllBytes(uploadPath, bytes);
+
+
+
+            }
+
+            return Ok("檔案上傳成功");
         }
         public IActionResult SVG()
         {

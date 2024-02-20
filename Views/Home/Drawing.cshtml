@@ -96,12 +96,29 @@
 
         })
         //儲存
-        btnSave.addEventListener("click", function () {       
+        btnSave.addEventListener("click", async () => {       
             myImg.src = canvas.toDataURL("image/png");
+
+            //上傳到Server
+            const base64String = canvas.toDataURL("image/png");
+            // base64String.split(",")
+            //["data:image/png;base64","iVBORw0KGgoAAAANSUhEUgAAAlgAAAEsCAYAAAAfPc2WAAAAAXNSR0IArs4c6QAAHnhJREFUeF7t3WvIb1ldB/CfM2eumj...."]
+            const base64Json = { "imageBase64": base64String.split(",")[1], "fileName": "" };
+           // console.log(base64Json);
+            const response = await fetch('@Url.Content("~/home/DrawingUpload")', {
+                method:'POST',
+                body: JSON.stringify(base64Json),
+                headers: {
+                    'Content-Type':'application/json'
+                }
+            });
+            const data = await response.text();
+            alert(data);
+
         }, false);
         //清除
         btnClear.addEventListener("click", function () {
-            context.clearRect(0, 0, 600, 300);
+            context.clearRect(0, 0, canvas.width, canvas.height);
             //location.reload();
         }, false);
     </script>
