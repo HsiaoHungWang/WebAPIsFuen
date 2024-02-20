@@ -5,9 +5,9 @@
 
 <h1>DragAndDrop</h1>
 <div id="zone1" class="zone">
-    <div id="d1" class="item">Item1</div>
-    <div id="d2" class="item">Item2</div>
-    <div id="d3" class="item">Item3</div>
+    <div id="d1" class="item" draggable="true">Item1</div>
+    <div id="d2" class="item" draggable="true">Item2</div>
+    <div id="d3" class="item" draggable="true">Item3</div>
     <a id="a1" href="https://www.ispan.com.tw" class="item">iSpan</a>
     <img src="~/images/bunny.png" class="item" id="img1">
 </div>
@@ -17,6 +17,35 @@
     <script>
         const divs = document.querySelectorAll('.item');
         const zones = document.querySelectorAll('.zone');
+
+        //將拖曳對象ID存進DataTransfer物件中
+        const dragstartHandler = event => {
+            event.dataTransfer.setData("text/plain",event.target.id);
+        }
+
+        //從DataTransfer物件中取出被拖曳對象的ID
+        const dropHandler = event => {
+            event.preventDefault();
+            event.stopPropagation();
+            const sId = event.dataTransfer.getData("text/plain");
+
+            const sObj = document.querySelector(`#${sId}`);
+            event.target.appendChild(sObj);
+
+        }
+
+        //每一個要被拖曳的元素，綁定Dragstart事件
+        divs.forEach(item => {
+            item.addEventListener('dragstart', dragstartHandler);
+        })
+
+        //每一個要能夠放下元素的區域，都要綁定Dragover及Drop事件
+        zones.forEach(zone => {
+            zone.addEventListener('dragover', event => event.preventDefault());
+            zone.addEventListener('drop', dropHandler);
+        })
+
+     
 
         
      
