@@ -12,7 +12,12 @@
         const btnStop = document.querySelector('#button2');
         let source;
         btnStart.addEventListener("click", event => {
-           
+            source = new EventSource('@Url.Content("~/answers/message")');
+            source.onmessage = event => {
+                console.log(`id：${event.lastEventId}`);
+                //event.data 就會得到Server回傳的資料
+                serverClock.textContent = event.data;
+            }
         })
         btnStop.addEventListener('click', event => {          
             if (source) {

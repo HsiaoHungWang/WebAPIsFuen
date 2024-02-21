@@ -102,6 +102,7 @@ namespace WebAPIsFuen.Controllers
             message += $"id:{Guid.NewGuid()}\n";
             message += "retry:1000\n";
             message += $"data:{DateTime.Now.ToString("HH:mm:ss")}\n\n";
+
             return Content($"{message}", "text/event-stream", Encoding.UTF8);
         }
 
