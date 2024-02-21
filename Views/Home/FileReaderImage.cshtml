@@ -7,13 +7,15 @@
 <input id="file1" type="file" multiple accept="image/*" />
 <div class="zone">
 </div>
+<input type="button" value="上傳" id="buttonUpload" />
 @section Scripts {
     <script>
         const myFile = document.querySelector("#file1");
         const zone = document.querySelector(".zone");
+        const btnUpload = document.querySelector('#buttonUpload');
 
         myFile.addEventListener("change", event => {           
-         // event.target.files[0]
+            console.log(Array.from(event.target.files));
             for (let i = 0, max = event.target.files.length; i < max; i++) {
                 fileViewer(event.target.files[i]);
             }
@@ -42,6 +44,26 @@
             for (let i = 0, max = event.dataTransfer.files.length; i < max; i++) {
                 fileViewer(event.dataTransfer.files[i]);
             }
+        })
+
+        btnUpload.addEventListener('click', async () => {
+           // console.log(myFile.files);
+           //將FileList轉成陣列           
+            const ArrayFiles = Array.from(myFile.files);
+
+           //將File物件塞進FormData
+            const formData = new FormData();
+            ArrayFiles.forEach(theFile => {
+                formData.append("files",theFile);
+            })
+
+            //檔案上傳
+            const response = await fetch('@Url.Content("~/home/ImagesUpload")', {
+                method: 'POST',
+                body: formData //JSON、FormData               
+            });
+            const data = await response.text();
+            alert(data);
         })
     </script>
 }

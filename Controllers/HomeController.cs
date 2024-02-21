@@ -108,6 +108,22 @@ namespace WebAPIsFuen.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public IActionResult ImagesUpload(IEnumerable<IFormFile> files)
+        {
+            foreach(IFormFile file in files)
+            {
+                if (file != null) {
+                    string uploadPath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads", file.FileName);
+                    using(FileStream stream = new FileStream(uploadPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+                }
+            }
+            return Ok("OK");
+        }
+
         public IActionResult WebStorage()
         {
             return View();
