@@ -13,16 +13,36 @@
         const myFile = document.querySelector("#file1");
         const zone = document.querySelector(".zone");
         const btnUpload = document.querySelector('#buttonUpload');
+        let uploadFiles = new Array();
 
-        myFile.addEventListener("change", event => {           
-            console.log(Array.from(event.target.files));
-            for (let i = 0, max = event.target.files.length; i < max; i++) {
-                fileViewer(event.target.files[i]);
-            }
-            // event.target.files.forEach(theFile => {
-            //     console.log(theFile);
-            // })
+        myFile.addEventListener("change", event => {
+            uploadFiles = Array.from(event.target.files);
+
+
+            // for (let i = 0, max = event.target.files.length; i < max; i++) {
+            //     fileViewer(event.target.files[i]);
+            // }
+            uploadFiles.forEach(theFile => {
+                fileViewer(theFile);
+            })
         });
+
+        const removeImg = event => {
+          console.log(uploadFiles);
+            // console.log(event.target);  //<img>
+            // console.log(event.target.dataset.name);
+
+            //移除陣列中的圖片
+            uploadFiles = uploadFiles.filter(file => {
+                return file.name != event.target.dataset.name;;
+            })
+           //  console.log(uploadFiles);
+
+           //移除網頁上圖片
+            //event.target.parentNode => <div>
+           event.target.parentNode.removeChild(event.target);
+            console.log(uploadFiles);
+        }
         function fileViewer(theFile) {
             //透過FileReader物件中readAsDataURL()讀取theFile的圖
             const reader = new FileReader();
@@ -30,7 +50,8 @@
             reader.addEventListener('load', event => {
                 //會得到base64的圖
                // console.log(event.target.result);
-                const imgHtml = `<img src="${event.target.result}" class="thumb" />`;
+               //data-*  //*是自己取名  dataset.*
+                const imgHtml = `<img src="${event.target.result}" ondblclick="removeImg(event)" data-name="${theFile.name}" class="thumb" />`;
                 //beforeend 結束標籤</div>的前面
                 zone.insertAdjacentHTML('beforeend', imgHtml);
             })
@@ -41,19 +62,24 @@
         zone.addEventListener("drop", event=>{
             event.preventDefault();
             event.stopPropagation();
-            for (let i = 0, max = event.dataTransfer.files.length; i < max; i++) {
-                fileViewer(event.dataTransfer.files[i]);
-            }
+
+            uploadFiles = Array.from(event.dataTransfer.files);
+            // for (let i = 0, max = event.dataTransfer.files.length; i < max; i++) {
+            //     fileViewer(event.dataTransfer.files[i]);
+            // }
+            uploadFiles.forEach(theFile => {
+                fileViewer(theFile);
+            })
         })
 
         btnUpload.addEventListener('click', async () => {
            // console.log(myFile.files);
            //將FileList轉成陣列           
-            const ArrayFiles = Array.from(myFile.files);
+           // const ArrayFiles = Array.from(myFile.files);
 
            //將File物件塞進FormData
             const formData = new FormData();
-            ArrayFiles.forEach(theFile => {
+            uploadFiles.forEach(theFile => {
                 formData.append("files",theFile);
             })
 
