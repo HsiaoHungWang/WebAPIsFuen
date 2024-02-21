@@ -49,18 +49,25 @@ namespace WebAPIsFuen.Controllers
             //string? userName = null;
             while (!res.CloseStatus.HasValue)
             {
-                string json = Encoding.UTF8.GetString(buffer, 0, res.Count);
+                //{"UserName":"Tom","MessageContent":"Hello All!!"}
+                string json = Encoding.UTF8.GetString(buffer, 0, res.Count); //json字串
                 var options = new JsonSerializerOptions()
                 {
                     PropertyNameCaseInsensitive = true
                 };
+                //反序列化Deserialize => json字串轉成 Message 物件
+                //{"UserName":"Tom","MessageContent":"Hello All!!"} 轉成 Message物件
                 Message? receivedMessage = JsonSerializer.Deserialize<Message>(json, options);
                
                 if (receivedMessage != null)
                 {
                   //  userName = receivedMessage.UserName;
+                  //再把Server時間寫進Message物件
                     receivedMessage.Timestamp = DateTime.Now;
+                    //序列化 Serialize   Message物件轉成Json字串
+
                     string updatedJson = JsonSerializer.Serialize(receivedMessage);
+                    //Message物件轉成JSON字串，廣播給所有連線的使用者
                     Broadcast(updatedJson); //接收到的資料傳給Broadcase自訂函式，在此函式中廣播給所有連線的使用者
                 }
 
