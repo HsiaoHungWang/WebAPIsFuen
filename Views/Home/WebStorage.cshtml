@@ -30,19 +30,28 @@
 
         btnGet.addEventListener("click", ()=> {
             //讀出localStorage與sessionStorage中的資料，顯示在div中
-            console.log(localStorage.getItem("local1"));
-            console.log(sessionStorage.getItem("session1"));
+            // console.log(localStorage.getItem("local1"));
+            // console.log(sessionStorage.getItem("session1"));
 
 
             //let str = "";
             //讀取多筆資料
+            // console.log(localStorage.length);
+            // console.log(localStorage.key(1)); //傳入index回傳keyName
+            // console.log(localStorage.getItem("a"));
+            for (let i = 0, max = localStorage.length; i < max; i++) {
+                const keyName = localStorage.key(i);
+                console.log(localStorage.getItem(keyName));
+            }
         
         })
 
         btnRemove.addEventListener("click", ()=>{
             //刪除單筆資料
+            //localStorage.removeItem("local1");
            
             //清除所有資料
+            localStorage.clear();
            
         })
     </script>
