@@ -13,17 +13,35 @@
         const zone = document.querySelector(".zone");
 
         myFile.addEventListener("change", event => {           
-          
+         // event.target.files[0]
+            for (let i = 0, max = event.target.files.length; i < max; i++) {
+                fileViewer(event.target.files[i]);
+            }
+            // event.target.files.forEach(theFile => {
+            //     console.log(theFile);
+            // })
         });
         function fileViewer(theFile) {
             //透過FileReader物件中readAsDataURL()讀取theFile的圖
+            const reader = new FileReader();
+            reader.readAsDataURL(theFile);
+            reader.addEventListener('load', event => {
+                //會得到base64的圖
+               // console.log(event.target.result);
+                const imgHtml = `<img src="${event.target.result}" class="thumb" />`;
+                //beforeend 結束標籤</div>的前面
+                zone.insertAdjacentHTML('beforeend', imgHtml);
+            })
          
         }
 
         zone.addEventListener("dragover", event => event.preventDefault());
         zone.addEventListener("drop", event=>{
             event.preventDefault();
-           
+            event.stopPropagation();
+            for (let i = 0, max = event.dataTransfer.files.length; i < max; i++) {
+                fileViewer(event.dataTransfer.files[i]);
+            }
         })
     </script>
 }
