@@ -11,10 +11,31 @@
     <script>
         const zone = document.querySelector('.zone');
         const myFile = document.querySelector('#file1')
+
+        //透過type=file產生File物件
+        myFile.addEventListener('change', event => {
+          //  console.log(event.target.files[0]);
+            fileInfo(event.target.files[0]);
+        })
+
+        //透過Drag and Drop產生File物件     
+        zone.addEventListener('dragover', event => event.preventDefault());
+        zone.addEventListener('drop', event => {
+            event.preventDefault();
+            event.stopPropagation();
+
+           // console.log(event.dataTransfer.files[0]);
+            fileInfo(event.dataTransfer.files[0]);
+        })
        
         function fileInfo(theFile) {
             //theFile -> File物件
             //透過 console.log()，顯示檔案名稱、類型、大小及最後修改日期
+            console.log(theFile.name); //檔案名稱
+            console.log(theFile.type); //檔案類型  image/??  text/??
+            console.log(theFile.size); //檔案大小
+            console.log(formatLastModified(theFile.lastModified)); //最後更新日期
+            console.log(theFile.lastModifiedDate); //最後更新日期
 
         }
 
