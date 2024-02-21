@@ -76,7 +76,7 @@
             flag = false;
         })
        
-        theFile.addEventListener('change', function () {
+        theFile.addEventListener('change', function (event) {
             const imageObj = new Image();
            // imageObj.addEventListener('load', function () { })
             imageObj.onload = function () {
@@ -91,8 +91,13 @@
             }
 
             //這是不正確的寫法
-            imageObj.src =`/images/${this.files[0].name}`;  //會到Server端去下載圖片
+           // imageObj.src =`/images/${this.files[0].name}`;  //會到Server端去下載圖片
             //要改用FileReader物件去讀取使用者選到自己電腦中的圖
+            const reader = new FileReader();
+            reader.readAsDataURL(event.target.files[0]);
+            reader.addEventListener('load', event => {
+                imageObj.src = event.target.result;
+            })
 
         })
         //儲存
@@ -113,7 +118,14 @@
                 }
             });
             const data = await response.text();
+
             alert(data);
+
+            //上傳成功，清除localStorag中暫存的資料
+            localStorage.removeItem("drawing");
+            //清除Canvas的畫面
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
 
         }, false);
         //清除
@@ -121,6 +133,27 @@
             context.clearRect(0, 0, canvas.width, canvas.height);
             //location.reload();
         }, false);
+
+        //暫存
+        window.addEventListener('beforeunload', () => {
+            //瀏覽器關閉，先將canvas的圖存到localStorage
+            localStorage.setItem("drawing", canvas.toDataURL("image/png"));
+        })
+        //讀回
+        window.addEventListener('load', () => {
+            //網頁開啟，先從localStorag載入暫存的圖
+            const base64String = localStorage.getItem("drawing");
+            if (base64String != null) {
+                const myImg = new Image();
+                myImg.src = base64String;
+                myImg.addEventListener('load',()=>{
+                    context.drawImage(myImg, 0, 0);
+                })
+
+
+            }
+        })
+
     </script>
 }
 
