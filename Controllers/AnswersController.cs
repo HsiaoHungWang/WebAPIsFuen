@@ -118,6 +118,8 @@ namespace WebAPIsFuen.Controllers
             message += $"id:{Guid.NewGuid()}\n";
             message += "retry:60000\n";
             message += $"data:{json}\n\n";
+
+
             return Content($"{message}", "text/event-stream", Encoding.UTF8);
           
         }
