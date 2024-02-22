@@ -34,11 +34,23 @@
     <script>
         const btnCopy = document.querySelector('#copy');
         const btnPaste = document.querySelector('#paste');
+
+        //     console.log(navigator);
+        // console.log(navigator.clipboard.readText().then
         
             //todo 寫個 copy function 透過 Clipboard API 進行複製
+        const copy = async () => {
+            const copyText = document.querySelector('#codeCopy').textContent;
+            //將資料寫進剪貼簿
+            await navigator.clipboard.writeText(copyText);
+        }
 
             //todo 寫個 paste function 透過 Clipboard API 完成貼上
-      
+            const paste = async () => {
+                //從剪貼簿讀出資料，經過使用者的允許
+                const pasteText = await navigator.clipboard.readText();
+                document.querySelector('#codePaste').textContent = pasteText;
+            }
 
         btnCopy.addEventListener('click', copy);
         btnPaste.addEventListener('click', paste);
