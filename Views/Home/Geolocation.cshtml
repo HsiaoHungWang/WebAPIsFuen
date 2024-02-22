@@ -10,19 +10,32 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
 
+        navigator.geolocation.getCurrentPosition(successHandler, errorHandler);
+
+        function successHandler(position) {
+            //console.log(position.coords.latitude, position.coords.longitude);
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            const map = L.map('map').setView([latitude, longitude], 13)
+            //
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+            //設定Marker
+            L.marker([latitude, longitude], {
+                title: "現在位置",
+                opacity: 1
+            }).addTo(map)
+            //.bindPopup('聖德').openPopup();
+
+        }
+        function errorHandler(error){
+            console.log(error.code, error.message);
+        }
 
 
-        // const map = L.map('map').setView([latitude, longitude], 13)
-        // //
-        // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        //     attribution: '© OpenStreetMap contributors'
-        // }).addTo(map);
-        // //設定Marker
-        // L.marker([latitude, longitude], {
-        //     title: "現在位置",
-        //     opacity: 1
-        // }).addTo(map)
-        // //  .bindPopup('現在位置').openPopup();
+ 
 
     </script>
 }

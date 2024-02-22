@@ -20,14 +20,16 @@
                 console.log("通知功能的程式碼寫在這裡");
                 notification = new Notification("台積電報名截止", {
                     body: "2024/2/22 12:00 報名結束，請盡快!!",
-                    tag: "system",
-                    icon: "/images/notify.jpg"
+                    tag: "system1",
+                    icon: "/images/notify.jpg",
+                    renotify:true
                 });
-                // notification = new Notification("報名截止", {
-                //     body: "2024/2/29 12:00 報名結束，請盡快!!",
-                //     tag: "system",
-                //     icon: "/images/notify.jpg"
-                // });
+                notification = new Notification("報名截止", {
+                    body: "2024/2/29 12:00 報名結束，請盡快!!",
+                    tag: "system2",
+                    icon: "/images/notify.jpg",
+                    renotify: true
+                });
                 notification.onshow = () => {
                     console.log('show');
                    setTimeout("notification.close()", 3000);
