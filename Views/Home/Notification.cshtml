@@ -13,10 +13,31 @@
       
         function notifyMe() {
             console.log(Notification.permission);
+            let notificatoin;
             if (Notification.permission === "default") {
                 getPermission(notifyMe);                
             } else if (Notification.permission === "granted") {
                 console.log("通知功能的程式碼寫在這裡");
+                notification = new Notification("台積電報名截止", {
+                    body: "2024/2/22 12:00 報名結束，請盡快!!",
+                    tag: "system",
+                    icon: "/images/notify.jpg"
+                });
+                // notification = new Notification("報名截止", {
+                //     body: "2024/2/29 12:00 報名結束，請盡快!!",
+                //     tag: "system",
+                //     icon: "/images/notify.jpg"
+                // });
+                notification.onshow = () => {
+                    console.log('show');
+                   setTimeout("notification.close()", 3000);
+                }
+                notification.onclick = () => {
+                    console.log('click');
+                }
+                notification.onclose = () => {
+                    console.log('close');
+                }
             }else {
                 console.log("使用者拒絕")
             }
