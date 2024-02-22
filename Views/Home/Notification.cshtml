@@ -12,7 +12,19 @@
         document.querySelector("#button1").addEventListener("click", notifyMe);
       
         function notifyMe() {
-           
+            console.log(Notification.permission);
+            if (Notification.permission === "default") {
+                getPermission(notifyMe);                
+            } else if (Notification.permission === "granted") {
+                console.log("通知功能的程式碼寫在這裡");
+            }else {
+                console.log("使用者拒絕")
+            }
+        }
+
+        function getPermission(cb) {
+            //取得使用者的授權
+            Notification.requestPermission(cb);
         }
 
      
