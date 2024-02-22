@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link rel="stylesheet" href="abc.css" />
+    <link rel="stylesheet" href="xyz.css" />
+</head>
+<body>
+    <h1>離線應用</h1>
+
+    <script>
+        navigator.serviceWorker.register('sw.js')
+            .then(function (reg) {
+                //註冊成功
+                console.log(reg.scope);
+             })
+            .catch(function (err) {
+                //註冊失敗
+                console.log(err);
+            })
+    </script>
+</body>
+</html>
