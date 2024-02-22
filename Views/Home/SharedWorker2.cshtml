@@ -17,8 +17,10 @@
             worker.port.postMessage({ "name": "Tracy" });
 
             //接收worker傳過來的資料
-            
-            worker.port.onmessage = event => myDiv.innerHTML = event.data;
+           // worker.port.addEventListener("message", function (event) {
+                worker.port.onmessage = event => myDiv.innerHTML = event.data;
+           // }
+        
             
         })
     </script>

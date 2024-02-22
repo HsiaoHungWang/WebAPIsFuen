@@ -16,9 +16,13 @@
 
 @section Scripts{
     <script>
+		const divResult = document.querySelector('#result');
 		function sosucal1() {
 			//呼叫 Web Worker /js/sosu-worker.js
-			
+			const worker = new Worker("/js/sosu-worker.js");
+			worker.onmessage = event => {
+				divResult.textContent = event.data;
+			}
 
 		}
 

@@ -16,7 +16,7 @@
     <label>選擇檔案：</label>
     <input type="file" id="file1">
 </div>
-<canvas id="myCanvas" width="600" height="300"></canvas>
+<canvas id="myCanvas" width="512" height="512"></canvas>
 <hr/>
 <input type="button" class="btn btn-primary" value="儲存" id="buttonSave" />
 <input type="button" class="btn btn-warning" value="清除" id="buttonClear" />
@@ -80,14 +80,14 @@
             const imageObj = new Image();
            // imageObj.addEventListener('load', function () { })
             imageObj.onload = function () {
-                for (var i = 0; i < 20; i++) {
-                    var w = Math.floor(Math.random() * 40);    //設定繪製圖型的大小
-                    var x = Math.floor(Math.random() * canvas.width); //設定繪製圖型位置的x座標
-                    var y = Math.floor(Math.random() * canvas.height); //設定繪製圖型位置的y座標
+                // for (var i = 0; i < 20; i++) {
+                //     var w = Math.floor(Math.random() * 40);    //設定繪製圖型的大小
+                //     var x = Math.floor(Math.random() * canvas.width); //設定繪製圖型位置的x座標
+                //     var y = Math.floor(Math.random() * canvas.height); //設定繪製圖型位置的y座標
 
-                    //todo 將選取的圖,放大縮小後繪到canvas中
-                    context.drawImage(imageObj, x, y, w, w);
-                }
+                //     //todo 將選取的圖,放大縮小後繪到canvas中
+                    context.drawImage(imageObj,0, 0, 512, 512);
+                // }
             }
 
             //這是不正確的寫法
