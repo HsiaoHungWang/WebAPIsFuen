@@ -1,11 +1,14 @@
 using WebAPIsFuen.Controllers;
+using WebAPIsFuen.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();
-
+//註冊 SignalR 的服務
+builder.Services.AddSignalR();
+//註冊 WebSocket 的服務
 builder.Services.AddSingleton<WebSocketController>();
 
 var app = builder.Build();
@@ -33,5 +36,8 @@ app.UseWebSockets(new WebSocketOptions
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+//設定SignalR的程式進入點
+app.MapHub<DrawingHub>("/DrawingHub");
 
 app.Run();
