@@ -24,8 +24,8 @@
 <img id="img1" />
 @section Scripts {
     <script>
-        const canvas = document.querySelector('#myCanvas');
-        const context = canvas.getContext('2d');
+        const canvas = document.querySelector('#myCanvas'); //Canvas
+        const context = canvas.getContext('2d'); //繪圖物件 
         let flag = false;
         const cw = document.querySelector('#range1'); //畫筆粗細
         const w = document.querySelector('#span1');
@@ -36,33 +36,40 @@
         const myImg = document.querySelector('#img1');
 
         
-        cw.addEventListener("input", function () {
-            w.innerHTML = this.value;
-        })
+        //粗細 <input type="range"
+        cw.addEventListener("input", event => { w.innerHTML = event.target.value });
+
 
         canvas.addEventListener("mousedown", function (evt) {
             flag = true;
+            //console.log(evt.offsetX, evt.offsetY);
+
             //todo 開始一個新路徑，產生後再使用繪圖指令來設定路徑。
-           
+            context.beginPath();
             
             //todo 設定線條的顏色
+            context.strokeStyle = c.value;
            
             //todo 設定線條寬度
-         
+            context.lineWidth = cw.value;
 
             //todo 移動畫筆到指定的滑鼠點選的位置上
             //使用event.offsetX 取得滑鼠的x軸座標點
             //使用event.offsetY 取得滑鼠的y軸座標點
             //canvas左上角為0,0
+            context.moveTo(evt.offsetX, evt.offsetY);
            
            
         })
-
         canvas.addEventListener("mousemove", function (evt) {
             if (flag) {
+               // console.log(evt.offsetX, evt.offsetY);
+
                 //todo 從目前繪圖點畫一條直線到滑鼠點選的位置上
+                context.lineTo(evt.offsetX, evt.offsetY);
               
                 //todo 畫出圖形的線條
+                context.stroke();
              
             }
         })
@@ -70,6 +77,8 @@
             flag = false;
         })
        
+
+
         theFile.addEventListener('change', function () {
             const imageObj = new Image();
             imageObj.onload = function () {
