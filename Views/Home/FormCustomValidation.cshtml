@@ -94,37 +94,37 @@
                 }
             } else {
                 //todo1
-                const s = event.target.___________; //取得表單的驗證狀態使用甚麼屬性
+                const s = event.target.validity; //取得表單的驗證狀態使用甚麼屬性
                 let strMessage = "";
                 //自訂驗證的錯誤訊息
                 //todo2
                 //請根據 strMessage 的說明填寫空格中的驗證狀態屬性
                 switch (true) {
-                    case s.____________:
+                    case s.valueMissing:
                         strMessage = `${title}是必填欄位`;
                         break;
-                    case s.____________:
+                    case s.patternMismatch:
                         strMessage = `${title}格式不正確`;
                         break;
-                    case s.____________:
+                    case s.typeMismatch:
                         strMessage = `${title}型態不符`;
                         break;
-                    case s.____________:
+                    case s.rangeOverflow:
                         strMessage = `${title}超過最大值`;
                         break;
-                    case s.____________:
+                    case s.rangeUnderflow:
                         strMessage = `${title}超過最小值`;
                         break;
-                    case s.____________:
+                    case s.tooLong:
                         strMessage = `${title}超過長度`;
                         break;
-                    case s.____________:
+                    case s.stepMismatch:
                         strMessage = `${title}級數不對`;
                         break;
 
                 }
                 //todo3
-                event.target.________________(strMessage);  //自訂驗證訊息用甚麼方法
+                event.target.setCustomValidity(strMessage);  //自訂驗證訊息用甚麼方法
             }
         }
 
@@ -134,9 +134,9 @@
 
         //todo4
         //取消預設的驗證訊息的顯示方式
-        registerFrm.addEventListener('_______', function (event) {
+        registerFrm.addEventListener('invalid', function (event) {
             event.preventDefault();
-        }, __________);
+        }, true);
 
         btnSubmit.addEventListener('click', event => {
             event.preventDefault(); //取消Submit的預設行為
