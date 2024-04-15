@@ -63,6 +63,12 @@
             audio.play();
             //將撥放的音樂名稱顯示在id為playSong的span標籤中
             spanPlay.innerHTML = `現在播放：${playingFile.name}`;
+
+            //離開頁面暫停歌曲的撥放，回到此頁面繼續撥放
+            if(audio.src){
+                window.addEventListener('blur', () => audio.pause());
+                window.addEventListener('focus', () => audio.play());
+            }
         }
                
         //todo 在甚麼事件中顯示撥放進度     
@@ -74,7 +80,7 @@
 
         //一首歌曲撥放完後，自動撥放下一首歌
         //todo 甚麼事件表示歌曲播放完成
-        audio.addEventListener("________", next);
+        audio.addEventListener("ended", next);
 
 
         //下一首歌
