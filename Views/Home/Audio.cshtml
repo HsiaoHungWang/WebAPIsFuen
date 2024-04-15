@@ -66,10 +66,10 @@
         }
                
         //todo 在甚麼事件中顯示撥放進度     
-        audio.addEventListener("_____________",  () => {
+        audio.addEventListener("timeupdate",  () => {
             //將撥放的音樂的進度顯示在id為info的span標籤中  目前播放進度/整首歌的播放長度
             //todo 用甚麼屬性取得播放進度，用甚麼屬性取得整首歌的長度
-            spanInfo.innerHTML = `${formatTime(audio.___________)}/${formatTime(audio._____________)}`;
+            spanInfo.innerHTML = `${formatTime(audio.currentTime)}/${formatTime(audio.duration)}`;
         }, false);
 
         //一首歌曲撥放完後，自動撥放下一首歌
@@ -120,7 +120,7 @@
        
         //設定音量的大小 parseFloat(this.value / 10)
         //todo 用甚麼屬性控制音量
-        volume.addEventListener("change", event => audio._________ = parseFloat(event.target.value / 10));
+        volume.addEventListener("change", event => audio.volume = parseFloat(event.target.value / 10));
 
         //格式化時間 mm:ss
         function formatTime(seconds) {
