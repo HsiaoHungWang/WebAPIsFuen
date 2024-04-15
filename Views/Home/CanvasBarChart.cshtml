@@ -8,7 +8,21 @@
 @section Scripts {
     <script>       
         const datas = [90, 50, 170, 180, 50, 60];
-      
+
+        const canvas = document.querySelector('#myCanvas');
+        const context = canvas.getContext("2d");
+        let w = 50;
+        let x = 20;
+        let y = canvas.height;
+        context.fillStyle = "green";
+
+        datas.forEach(h => {
+           // console.log(h);
+            context.fillRect(x, y - h, w, h);
+            x += w + 10;
+        })
+
+
         
 
     </script>
