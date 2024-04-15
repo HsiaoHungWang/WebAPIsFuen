@@ -29,8 +29,8 @@
         // context.fill();
 
         //畫圓
-       //  const x = canvas.width / 2;
-       //  const y = canvas.height / 2;
+        const x = canvas.width / 2;
+        const y = canvas.height / 2;
        //  const r = 100;
 
        //  context.moveTo(x, y);
@@ -41,13 +41,20 @@
        //  context.fill();
 
        //畫圖
-        const imgObject = new Image();
-        imgObject.src = "/images/cars.jpg";
-        imgObject.addEventListener('load', () => {
-            context.drawImage(imgObject, 0, 0);
-            context.drawImage(imgObject, 0, 0, 200, 150);
-            context.drawImage(imgObject, 186,73,200,200, 0, 0, 100, 100);
-        })
+        // const imgObject = new Image();
+        // imgObject.src = "/images/cars.jpg";
+        // imgObject.addEventListener('load', () => {
+        //     context.drawImage(imgObject, 0, 0);
+        //     context.drawImage(imgObject, 0, 0, 200, 150);
+        //     context.drawImage(imgObject, 186,73,200,200, 0, 0, 100, 100);
+        // })
+
+        //寫字
+        context.font = "48px arial";
+        context.textAlign = "center";
+        //context.fillText("Hello Canvas!!", x, y);
+        context.strokeText("Hello Canvas!!", x, y);
+
 
 
         
