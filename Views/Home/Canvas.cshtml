@@ -4,4 +4,63 @@
 }
 
 <h1>Canvas</h1>
+<canvas width="400" height="300" id="myCanvas"></canvas>
+
+@section Scripts{
+    <script>
+        const canvas = document.querySelector('#myCanvas');
+        const context = canvas.getContext('2d');
+        context.fillStyle = "green"; //填滿的顏色
+        context.strokeStyle = "red"; //框線的顏色
+        context.lineWidth = "3"; //畫筆的粗細
+
+        //矩形
+        // context.fillRect(100, 50, 200, 90);
+        // context.strokeRect(100, 160, 200, 90);
+        // context.clearRect(150, 70, 100, 50);
+        //context.clearRect(0, 0, canvas.width, canvas.height); //清除整個Canvas的內容
+
+        //畫線
+        // context.beginPath(); //開始一個新的路徑
+        // context.moveTo(100, 150);
+        // context.lineTo(250, 75);
+        // context.lineTo(125, 30);
+        // context.closePath();
+        // context.fill();
+
+        //畫圓
+       //  const x = canvas.width / 2;
+       //  const y = canvas.height / 2;
+       //  const r = 100;
+
+       //  context.moveTo(x, y);
+       //  //畫弧
+       // // context.arc(x, y, r, Math.PI * 1, Math.PI * 1.5, true);
+       //  //畫圓
+       //  context.arc(x, y, r, Math.PI * 0, Math.PI * 2, true);
+       //  context.fill();
+
+       //畫圖
+        const imgObject = new Image();
+        imgObject.src = "/images/cars.jpg";
+        imgObject.addEventListener('load', () => {
+            context.drawImage(imgObject, 0, 0);
+            context.drawImage(imgObject, 0, 0, 200, 150);
+            context.drawImage(imgObject, 186,73,200,200, 0, 0, 100, 100);
+        })
+
+
+        
+
+
+
+    </script>
+}
+@section Styles{
+    <style>
+        #myCanvas{
+            border:1px solid green;
+        }
+    </style>
+}
 
