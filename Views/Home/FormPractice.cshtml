@@ -9,7 +9,7 @@
     <div class="col-6">
         <h2>HTML5 Form Validation</h2>
         <p>請根據 View 中的註解說明，完成表單驗證功能</p>
-        <form id="registerForm">
+        <form id="registerForm" action="~/controller/action" method="post">
             <div class="mb-3">
                 <label for="account" class="form-label">帳號</label>
                 <input type="text" class="form-control" id="account" required>
@@ -52,6 +52,7 @@
                 <!--1.請填入正確的type. 2.最小值10 3.最大值100 4.預設值20-->
             </div>
             <button type="submit" class="btn btn-primary">送出</button>
+            
         </form>
     </div>
     <div class="col-3"></div>
@@ -60,11 +61,37 @@
     <script>
         const p1 = document.querySelector('#pwd1');
         const p2 = document.querySelector('#pwd2');
+        const account = document.querySelector('#account');
+        const myForm = document.querySelector('#registerForm');
+
+
+        account.addEventListener('blur', event => {
+            console.log(event.target.validity);
+           // event.target.setCustomValidity('帳號一定要輸入');
+        })
+
         p2.addEventListener('blur', event => {
             if (event.target.value !== p1.value) {
-                alert('密碼不一致');
+                event.target.setCustomValidity('密碼不一致');
+            } else {
+                event.target.setCustomValidity('');
             }
         })
+        myForm.addEventListener('invalid', event => {
+            event.preventDefault();
+            const s = event.target.validity;
+            let strMessage = "";
+            switch (true) {
+                case s.valueMissing:
+                    strMessage = "必填欄位";
+                    break;
+                case s.typeMismatch:
+                    strMessage = "型態錯誤";
+                    break;
+            }
+            alert(strMessage);
+
+        },true)
 
     </script>
 }
