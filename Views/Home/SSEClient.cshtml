@@ -12,11 +12,14 @@
         const btnStop = document.querySelector('#button2');
         let source;
         btnStart.addEventListener("click", event => {
-           
+            source = new EventSource('@Url.Content("~/home/message")');
+            source.onmessage = event => {
+                serverClock.textContent = event.data;
+            }
         })
         btnStop.addEventListener('click', event => {          
             if (source) {
-              
+                source.close();
             }
         })
       

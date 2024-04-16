@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Text;
 using WebAPIsFuen.Models;
 
 namespace WebAPIsFuen.Controllers
@@ -87,6 +88,15 @@ namespace WebAPIsFuen.Controllers
         public IActionResult SSEClient()
         {
             return View();
+        }
+        public IActionResult Message()
+        {
+            string message = "";
+            message += $"id:{Guid.NewGuid()}\n";
+            message += $"retry:3000\n";
+            message += $"data:{DateTime.Now.ToString("HH:mm:sss")}\n\n";
+
+            return Content(message, "text/event-stream", Encoding.UTF8);
         }
 
         public IActionResult YoubikeClient()
