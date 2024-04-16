@@ -5,7 +5,7 @@
 
 <h1>FileAPI</h1>
 <div class="zone">
-    <input id="file1" type="file" />
+    <input id="file1" type="file" multiple />
 </div>
 @section Scripts {
     <script>
@@ -15,9 +15,20 @@
         function fileInfo(theFile) {
             //theFile -> File物件
             //透過 console.log()，顯示檔案名稱、類型、大小及最後修改日期
-
+            console.log(theFile.name); //檔案名稱
+            console.log(theFile.type); //類型
+            console.log(theFile.size); //大小
+            console.log(formatLastModified(theFile.lastModified)); //最後修改日期
+            console.log(theFile.lastModifiedDate); //最後修改日期
         }
 
+        myFile.addEventListener('change', event => fileInfo(event.target.files[0]));
+
+        zone.addEventListener('dragover', event => event.preventDefault());
+        zone.addEventListener('drop', event => {
+            event.preventDefault();
+            fileInfo(event.dataTransfer.files[0]);
+        })
        
         //傳入毫秒，轉成 yyyy/mm/dd hh:mm:ss 回傳
         function formatLastModified(lastModified) {
