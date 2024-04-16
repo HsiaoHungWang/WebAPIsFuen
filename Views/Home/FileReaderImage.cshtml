@@ -11,30 +11,55 @@
     <script>
         const myFile = document.querySelector("#file1");
         const zone = document.querySelector(".zone");
+        const uploadFiles = new Array();
 
         myFile.addEventListener("change", event => {           
-            //console.log(event.target.files)
+            //console.log(event.target.files)           
             for (let i = 0, max = event.target.files.length; i < max; i++) {
-                fileViewer(event.target.files[i]);
+                uploadFiles.push(event.target.files[i]);
+               // fileViewer(event.target.files[i]);
             }
+            fileViewer();
         });
-        function fileViewer(theFile) {
+
+        function fileViewer() {
+            //console.log(uploadFiles);
             //透過FileReader物件中readAsDataURL()讀取theFile的圖
-            const reader = new FileReader();
-            reader.readAsDataURL(theFile);
-            reader.addEventListener('load', event => {
-                const eleImg = `<img src="${event.target.result}" class="thumb" />`;
-                zone.insertAdjacentHTML('beforeend',eleImg);
+            zone.textContent = "";
+            uploadFiles.forEach(theFile => {
+                const reader = new FileReader();
+                reader.readAsDataURL(theFile);
+                reader.addEventListener('load', event => {
+                     const eleImg = `<img src="${event.target.result}" class="thumb" />`;
+                      zone.insertAdjacentHTML('beforeend', eleImg);
+                })
             })
-         
+
+            
+
         }
+
+
+        // function fileViewer(theFile) {
+        //     console.log(uploadFiles);
+        //     //透過FileReader物件中readAsDataURL()讀取theFile的圖
+        //     const reader = new FileReader();
+        //     reader.readAsDataURL(theFile);
+        //     reader.addEventListener('load', event => {
+        //         const eleImg = `<img src="${event.target.result}" class="thumb" />`;
+        //         zone.insertAdjacentHTML('beforeend',eleImg);
+        //     })
+         
+        // }
 
         zone.addEventListener("dragover", event => event.preventDefault());
         zone.addEventListener("drop", event=>{
             event.preventDefault();
             for (let i = 0, max = event.dataTransfer.files.length; i < max; i++) {
-                fileViewer(event.dataTransfer.files[i]);
+                uploadFiles.push(event.dataTransfer.files[i]);
+               // fileViewer(event.dataTransfer.files[i]);
             }
+            fileViewer();
         })
     </script>
 }
