@@ -4,7 +4,7 @@
 }
 
 <h1>Audio API</h1>
-@* <audio controls src="~/musics/K歌之王.mp3"></audio> *@
+<audio controls src="~/musics/K歌之王.mp3"></audio> 
 <hr />
 <p>歌曲撥放清單</p>
 <ul id="playlist" class="list-group"></ul>
@@ -16,7 +16,15 @@
 <hr />
 <span id="playSong"></span>
 <span id="info"></span>
+<canvas id="myCanvas" width="300" height="20"></canvas>
 
+@section Styles{
+    <style>
+        #myCanvas{
+            border:1px solid green;
+        }
+    </style>
+}
 
 @section Scripts{
     <script>
@@ -40,6 +48,15 @@
     
         //todo 建立Audio物件
         const audio = new Audio();
+
+        //建立Canvas物件
+        const canvas = document.querySelector('#myCanvas');
+        const context = canvas.getContext('2d');
+        canvas.addEventListener('click', event => {
+           // console.log((event.offsetX / canvas.width) * audio.duration);
+            audio.currentTime = (event.offsetX / canvas.width) * audio.duration;
+        })
+
 
         //播放初始音量
         //將撥放音量設定成0.5
@@ -76,6 +93,15 @@
             //將撥放的音樂的進度顯示在id為info的span標籤中  目前播放進度/整首歌的播放長度
             //todo 用甚麼屬性取得播放進度，用甚麼屬性取得整首歌的長度
             spanInfo.innerHTML = `${formatTime(audio.currentTime)}/${formatTime(audio.duration)}`;
+
+            //使用Canvas繪製播放進度
+            //Canvas的寬(w) = (歌曲播放進度(currentTime)/總首歌的長度(duration)) * Canvas寬
+            //w = 10/100 * 300
+            const w = (audio.currentTime / audio.duration) * canvas.width;
+            context.fillStyle = "lightgreen";
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.fillRect(0, 0, w, 20);
+
         }, false);
 
         //一首歌曲撥放完後，自動撥放下一首歌
