@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "FileReaderImage";
 }
 
@@ -11,13 +10,14 @@
     <script>
         const myFile = document.querySelector("#file1");
         const zone = document.querySelector(".zone");
-        const uploadFiles = new Array();
+        let uploadFiles = new Array();
 
-        myFile.addEventListener("change", event => {           
-            //console.log(event.target.files)           
+        myFile.addEventListener("change", event => {
+            //console.log(event.target.files)
             for (let i = 0, max = event.target.files.length; i < max; i++) {
+                //將File放進陣列中
                 uploadFiles.push(event.target.files[i]);
-               // fileViewer(event.target.files[i]);
+                // fileViewer(event.target.files[i]);
             }
             fileViewer();
         });
@@ -26,19 +26,30 @@
             //console.log(uploadFiles);
             //透過FileReader物件中readAsDataURL()讀取theFile的圖
             zone.textContent = "";
+            //從陣列中讀出檔案來顯示
             uploadFiles.forEach(theFile => {
                 const reader = new FileReader();
                 reader.readAsDataURL(theFile);
                 reader.addEventListener('load', event => {
-                     const eleImg = `<img src="${event.target.result}" class="thumb" />`;
-                      zone.insertAdjacentHTML('beforeend', eleImg);
+                    const eleImg = `<img src="${event.target.result}" class="thumb" ondblclick="removeImage(event.target)" title="${theFile.name}" />`;
+                    zone.insertAdjacentHTML('beforeend', eleImg);
                 })
             })
-
-            
-
         }
 
+        function removeImage(img) {
+          //  console.log(img);
+          //刪除陣列中的資料
+          //filter方法 return true會將此item返回
+            uploadFiles = uploadFiles.filter(item => {
+               // console.log(item.name != img.getAttribute("title"))
+                return item.name != img.getAttribute("title");
+            })
+
+          //刪除網頁上的內容
+            //img.parentNode.removeChild(img);
+           fileViewer();
+        }
 
         // function fileViewer(theFile) {
         //     console.log(uploadFiles);
@@ -49,22 +60,23 @@
         //         const eleImg = `<img src="${event.target.result}" class="thumb" />`;
         //         zone.insertAdjacentHTML('beforeend',eleImg);
         //     })
-         
+
         // }
 
         zone.addEventListener("dragover", event => event.preventDefault());
-        zone.addEventListener("drop", event=>{
+        zone.addEventListener("drop", event => {
             event.preventDefault();
             for (let i = 0, max = event.dataTransfer.files.length; i < max; i++) {
+                //將File放進陣列中
                 uploadFiles.push(event.dataTransfer.files[i]);
-               // fileViewer(event.dataTransfer.files[i]);
+                // fileViewer(event.dataTransfer.files[i]);
             }
             fileViewer();
         })
     </script>
 }
 
-@section Styles{
+@section Styles {
     <style>
         .zone {
             width: 600px;
