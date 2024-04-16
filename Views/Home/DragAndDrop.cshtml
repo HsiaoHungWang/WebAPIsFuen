@@ -5,9 +5,9 @@
 
 <h1>DragAndDrop</h1>
 <div id="zone1" class="zone">
-    <div id="d1" class="item">Item1</div>
-    <div id="d2" class="item">Item2</div>
-    <div id="d3" class="item">Item3</div>
+    <div id="d1" class="item" draggable="true">Item1</div>
+    <div id="d2" class="item" draggable="true">Item2</div>
+    <div id="d3" class="item" draggable="true">Item3</div>
     <a id="a1" href="https://www.ispan.com.tw" class="item">iSpan</a>
     <img src="~/images/bunny.png" class="item" id="img1">
 </div>
@@ -18,7 +18,36 @@
         const divs = document.querySelectorAll('.item');
         const zones = document.querySelectorAll('.zone');
 
-        
+        divs.forEach(item => {
+            item.addEventListener('dragstart', dragstartHandler);
+        })
+
+        function dragstartHandler(event) {
+            //console.log(event.target.id)
+            //將拖曳標籤的ID放進DataTransfer物件中
+            event.dataTransfer.setData("text/plain", event.target.id);
+        }
+
+        zones.forEach(zone => {
+            zone.addEventListener('dragover', event => event.preventDefault());
+            zone.addEventListener('drop', dropHandler);
+        })
+
+        function dropHandler(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            //取出放進DataTransfer物件中的ID
+           const sid = event.dataTransfer.getData("text/plain");
+           //根據ID找到標籤
+            const source = document.querySelector(`#${sid}`);
+            //將標籤移動到放下的區域中
+           event.target.appendChild(source);
+            //event.target.appendChild(source.cloneNode(true))
+
+        }
+
+
      
     </script>
 }
