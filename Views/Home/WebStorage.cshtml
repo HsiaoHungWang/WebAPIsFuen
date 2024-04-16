@@ -22,23 +22,33 @@
 
         btnSave.addEventListener("click",  ()=>{
             //資料寫入localStorage中
+            localStorage.setItem("local1", txtLocal.value);
 
             //資料寫入sessionStorage中
+            sessionStorage.setItem("session1", txtSession.value);
 
         })
 
         btnGet.addEventListener("click", ()=> {
             //讀出localStorage與sessionStorage中的資料，顯示在div中
+            const local = localStorage.getItem("local1");
+            const session = sessionStorage.getItem("session1");
+            myDiv.textContent = `localStorage: ${local}，sessionStorage：${session}`;
 
-            //let str = "";
+            let str = "";
             //讀取多筆資料
+            for (let i = 0, max = localStorage.length; i < max;i++){
+                const kn = localStorage.key(i); //取的keyname
+                console.log(localStorage.getItem(kn));
+            }
         
         })
 
         btnRemove.addEventListener("click", ()=>{
             //刪除單筆資料
-           
+            //localStorage.removeItem("local2");
             //清除所有資料
+            localStorage.clear();
            
         })
     </script>

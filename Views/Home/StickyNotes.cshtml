@@ -31,20 +31,22 @@
         //清除所有便利貼
         btnRemove.addEventListener("click", function () {
             //todo 加入清除所有localStorage的程式,使用clear方法
-           
+            localStorage.clear();
             location.reload();
         });
         //讓便利貼可以移動
         document.addEventListener("mousedown", mousedownHandler);
         document.addEventListener("mouseup", mouseupHandler);
+
+        //立即執行函式
         (() => {
             //寫個迴圈讀出localStorage中的key及value資料,並將此資料傳給addNote(key,value)方法
-            for (let i = 0; i < ____________; i++) { //todo 請將 "_______" 換成正確的程式，取得localstoage上有幾筆資料;
-                const key = ___________; //todo 請將 "_______" 換成正確的程式，以index取得key名稱;
+            for (let i = 0; i < localStorage.length; i++) { //todo 請將 "_______" 換成正確的程式，取得localstoage上有幾筆資料;
+                const key = localStorage.key(i); //todo 請將 "_______" 換成正確的程式，以index取得key名稱;
            
                
                 if (key.substr(0, 4) == "note") {
-                    const value = __________________;   //todo 請將 "_______" 換成正確的程式，使用getItem()取得key的值;
+                    const value = localStorage.getItem(key);   //todo 請將 "_______" 換成正確的程式，使用getItem()取得key的值;
                     addNote(key, value);
                 }
             }
@@ -89,7 +91,7 @@
             const value = obj.childNodes[3].firstChild.nodeValue;            
             if (value.trim().length > 0) {
                 //todo 將使用者輸入的內容,使用setItem的方法存到localStorage中
-                
+                localStorage.setItem(key, value);
             }
 
         }
@@ -97,7 +99,7 @@
             const obj = document.querySelector(`#${key}`);
             obj.parentNode.removeChild(obj);
             //todo 使用removeItem的方法,刪除某一筆localStorage中的資料
-            
+            localStorage.removeItem(key);
         }
 
         //移動便利貼
