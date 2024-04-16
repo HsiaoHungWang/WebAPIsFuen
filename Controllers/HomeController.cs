@@ -7,10 +7,13 @@ namespace WebAPIsFuen.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IWebHostEnvironment _webHost;
 
-        public HomeController(ILogger<HomeController> logger)
+
+        public HomeController(ILogger<HomeController> logger, IWebHostEnvironment webHostEnvironment)
         {
             _logger = logger;
+            _webHost = webHostEnvironment;
         }
 
         public IActionResult Index()
@@ -127,6 +130,33 @@ namespace WebAPIsFuen.Controllers
         {
             return View();
         }
+
+        public IActionResult Uploads(IEnumerable<IFormFile> files)
+        {
+            if (files.Count() != 0)
+            {
+                foreach (IFormFile file in files)
+                {
+                    //檔案上傳要知道資料夾的實際路徑
+                    //C:\Users\iSpan\Documents\WebAPIs\Workspace\wwwroot\uploads\a.jpg                 
+                    string uploadPath = Path.Combine(_webHost.WebRootPath, "uploads", file.FileName);
+                    //檔案的儲存要用FileStream
+                    using (FileStream stream = new FileStream(uploadPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+                }
+                return Content("上傳成功");
+            }
+            else
+            {
+                return Content("沒有檔案");
+            }
+
+            // return Content(uploadPath);
+        }
+
+
 
         public IActionResult Privacy()
         {
