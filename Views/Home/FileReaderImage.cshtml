@@ -6,11 +6,32 @@
 <input id="file1" type="file" multiple accept="image/*" />
 <div class="zone">
 </div>
+<button id="buttonSend" class="btn btn-primary mt-3">上傳</button>
 @section Scripts {
     <script>
         const myFile = document.querySelector("#file1");
         const zone = document.querySelector(".zone");
         let uploadFiles = new Array();
+        const btnSend = document.querySelector('#buttonSend');
+
+        //檔案上傳
+        btnSend.addEventListener('click', async() => {
+
+            //將陣列中的檔案放進FormData
+            const formData = new FormData();
+            uploadFiles.forEach(file => formData.append("files", file));
+
+
+            //透過Ajax
+            const response =  await fetch('@Url.Content("~/home/uploads")', {
+                method:'POST',
+                body: formData
+            })
+            const data = await response.text();
+
+            alert(data);
+            
+        })
 
         myFile.addEventListener("change", event => {
             //console.log(event.target.files)
@@ -47,7 +68,9 @@
             })
 
           //刪除網頁上的內容
-            //img.parentNode.removeChild(img);
+          //img.parentNode.removeChild(img);
+          
+          //從新產生網頁上的圖片
            fileViewer();
         }
 
