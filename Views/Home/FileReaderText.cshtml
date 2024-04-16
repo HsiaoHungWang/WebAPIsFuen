@@ -19,7 +19,16 @@
         
 
         function fileViewer(theFile) {
+           // console.log(theFile);
            //透過FileReader物件中readAsText()讀取theFile的文字內容
+            const reader = new FileReader();
+            reader.readAsText(theFile, 'utf-8');
+            //readAsText()讀資料，完成後會觸發load事件
+            reader.addEventListener('load', event => {
+                //取出讀取的資料
+                zone.textContent = event.target.result;
+            })
+
               
         }
        
