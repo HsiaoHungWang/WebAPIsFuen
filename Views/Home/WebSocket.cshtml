@@ -11,6 +11,19 @@
         const host = "wss://echo.websocket.org/";
         const myDiv = document.querySelector('#div1');
 
+        const socket = new WebSocket(host);
+        socket.onopen = event => {
+            console.log("WebSocket 連線成功");
+            socket.send("Hello Socket!!");
+        }
+        socket.onmessage = event => {
+            console.log(event.data);
+            socket.close();
+        }
+        socket.onclose = event => {
+            console.log("WebSocket 連線關閉")
+        }
+
        
 
     </script>
