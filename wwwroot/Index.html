@@ -8,5 +8,10 @@
 </head>
 <body>
     <h1>離線應用測試</h1>
+    <script>
+        navigator.serviceWorker.register('sw.js').then(function (reg) {
+            console.log('成功：',reg.scope);
+        })
+    </script>
 </body>
 </html>
