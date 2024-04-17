@@ -14,12 +14,13 @@
         const row = document.querySelector('.row');
         let i = 0;
         //todo1：建立EventSource物件，與 Server Sent Event Server ('/answers/youbikeserver')建立連線
-        const source = ____________________________;
+        const source = new EventSource('@Url.Content("~/answers/youbikeserver")');
 
       
         //todo2：接收Server傳回來的結果，要使用甚麼事件，將______換成適當的事件
-        source.addEventListener("____________", event => {
-            const datas = JSON.parse(____________);  //todo3：將______換成正確的取得資料的語法
+        source.addEventListener("message", event => {
+            //收到的是JSON字串，使用前要轉成JSON物件
+            const datas = JSON.parse(event.data);  //todo3：將______換成正確的取得資料的語法
             const htmlYoubike = datas.map(data => {
                 return (`
                      <div class="col">
@@ -41,7 +42,7 @@
                                 `);
             })
 
-            row.innerHTML = htmlYoubike;
+            row.innerHTML = htmlYoubike.join("");
 
         });
 

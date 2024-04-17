@@ -8,7 +8,7 @@ namespace WebAPIsFuen.Controllers
     {
         private readonly IHttpClientFactory _httpClientFactory;
         public AnswersController(IHttpClientFactory httpClientFactory) {
-        _httpClientFactory = httpClientFactory;
+            _httpClientFactory = httpClientFactory;
         }
         public IActionResult Index()
         {
@@ -112,9 +112,11 @@ namespace WebAPIsFuen.Controllers
 
         public async Task<IActionResult> YoubikeServer()
         {
-            HttpClient httpClient = _httpClientFactory.CreateClient();            
+            HttpClient httpClient = _httpClientFactory.CreateClient();      
+            
             var response = await httpClient.GetAsync("https://tcgbusfs.blob.core.windows.net/dotapp/youbike/v2/youbike_immediate.json");
             var json = await response.Content.ReadAsStringAsync();
+
             //var jsonObj = JArray.Parse(json).ToString();
             // return Content(jsonObj,"application/json",Encoding.UTF8);
             //組成 event-stream 的格式
