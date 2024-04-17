@@ -10,7 +10,15 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script>
 
-
+        navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+        function successCallback(position) {
+            console.log(position);
+            console.log(position.coords.latitude);
+            console.log(position.coords.longitude);
+        }
+        function errorCallback(error) {
+            console.log(error.code, error.message);
+        }
 
         // const map = L.map('map').setView([latitude, longitude], 13)
         // //
