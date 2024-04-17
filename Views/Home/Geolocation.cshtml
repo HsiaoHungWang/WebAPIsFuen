@@ -12,25 +12,33 @@
 
         navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
         function successCallback(position) {
-            console.log(position);
-            console.log(position.coords.latitude);
-            console.log(position.coords.longitude);
+           // console.log(position);
+           // console.log(position.coords.latitude);
+           // console.log(position.coords.longitude);
+
+            const latitude =  position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+
+            const map = L.map('map').setView([latitude, longitude], 13)
+         
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+            //設定Marker
+            L.marker([latitude, longitude], {
+                title: "現在位置",
+                opacity: 1
+            }).addTo(map)
+            //  .bindPopup('現在位置').openPopup();
+
+
         }
         function errorCallback(error) {
             console.log(error.code, error.message);
         }
 
-        // const map = L.map('map').setView([latitude, longitude], 13)
-        // //
-        // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        //     attribution: '© OpenStreetMap contributors'
-        // }).addTo(map);
-        // //設定Marker
-        // L.marker([latitude, longitude], {
-        //     title: "現在位置",
-        //     opacity: 1
-        // }).addTo(map)
-        // //  .bindPopup('現在位置').openPopup();
+       
 
     </script>
 }
