@@ -52,30 +52,30 @@
             if (event.target.value === "加入") {
                 event.target.value = "離開";
                 //todo 建立WebSocket物件
-                
+                socket = new WebSocket(wsUrl);
 
                 //todo 接收WebSocket傳送過來的資料事件
-                socket._____________ = (event) => {
-                    showMessage(JSON.parse(____________));
+                socket.onmessage = (event) => {
+                    showMessage(JSON.parse(event.data));
                 };
                 //todo 連線建立成功事件
-                socket.______________ = (event) => {                
+                socket.onopen = (event) => {                
                     const datas = { "userName": theName, "messageContent": "登入聊天室" };                  
                     sendMessage(JSON.stringify(datas));
                 };
                 //todo 關閉WebSocket連線事件
-                socket______________ = (event) => {
+                socket.onclose= (event) => {
                     console.log(event);
                 };
 
                 //todo WebSocket連線發生錯誤事件
-                socket.______________ = (error) => {
+                socket.onerror= (error) => {
                     console.error(error);
                 };
             } else {
                 event.target.value = "加入";
                 //todo 關閉WebSocket連線
-                socket.__________;
+                socket.close();
             }
         })
 
@@ -107,7 +107,7 @@
         function sendMessage(message) {
             if (socket && socket.readyState == WebSocket.OPEN) {
                 //todo 將訊息傳遞給 WebSocket Server
-                socket.____________;
+                socket.send(message);
             }else{
                 alert("請先加入聊天室");
             }
