@@ -13,9 +13,13 @@
         let source;
         btnStart.addEventListener("click", event => {
             source = new EventSource('@Url.Content("~/home/message")');
-            source.onmessage = event => {
-                serverClock.textContent = event.data;
-            }
+            //message事件是預設用來接收Server端回傳結果
+            source.addEventListener('show', event => {
+                serverClock.textContent = event.data; //event.data 就是server回傳的資料
+            })
+            // source.onmessage = event => {
+            //     serverClock.textContent = event.data; //event.data 就是server回傳的資料
+            // }
         })
         btnStop.addEventListener('click', event => {          
             if (source) {

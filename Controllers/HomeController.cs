@@ -92,8 +92,9 @@ namespace WebAPIsFuen.Controllers
         public IActionResult Message()
         {
             string message = "";
+            message += $"event:show\n";
             message += $"id:{Guid.NewGuid()}\n";
-            message += $"retry:3000\n";
+            message += $"retry:1000\n";
             message += $"data:{DateTime.Now.ToString("HH:mm:sss")}\n\n";
 
             return Content(message, "text/event-stream", Encoding.UTF8);
