@@ -1,5 +1,5 @@
-﻿const CACHE_NAME = "cache-v1";
-const urlsToCatch = ['/', '/abc.css', '/index.html', '/sw.js'];
+﻿const CACHE_NAME = "cache-v3";
+const urlsToCatch = ['/', '/abc.css', '/xyz.css', '/index.html', '/sw.js'];
 self.addEventListener('install', function (event) {
     console.log('install');
     event.waitUntil(
@@ -10,10 +10,19 @@ self.addEventListener('install', function (event) {
 })
 self.addEventListener('activate', function (event) {
     console.log('activate');
+    event.waitUntil(
+        caches.keys().then(function (names) {
+            return Promise.all(names.map(function (name) {
+                if (name != CACHE_NAME) {
+                    return caches.delete(name);
+                }
+            }))
+        })
+    );
 })
 self.addEventListener('fetch', function (event) {
     console.log('fetch');
-    event.responseEith(
+    event.respondWith(
         //
         //到Browser Cache 比對，成功會返回一個response物件
         caches.match(event.request).then(function (response) {
