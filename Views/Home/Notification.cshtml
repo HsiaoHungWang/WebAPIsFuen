@@ -10,15 +10,25 @@
 @section Scripts{
     <script>
         document.querySelector("#button1").addEventListener("click", notifyMe);
-      
+        let notification;
         async function notifyMe() {
             const permission = await Notification.requestPermission();
             if (permission === "granted") {
-                new Notification("WebAPIs課程將結束", {
+              notification =  new Notification("WebAPIs課程將結束", {
                     body: "結束時間是2024/4/17 16:30",
                     tag: "iSpan",
                     icon: "/images/flower.jpg"
                 });
+                notification.onshow = () => {
+                    console.log("show");
+                    window.setTimeout("notification.close()", 2000);
+                }
+                notification.onclick = () => {
+                    console.log("click");
+                }
+                notification.onclose = () => {
+                    console.log("close");
+                }
 
             } else if (permission === "denied") {
                 console.log("拒絕通知");
