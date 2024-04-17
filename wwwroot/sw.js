@@ -13,4 +13,13 @@ self.addEventListener('activate', function (event) {
 })
 self.addEventListener('fetch', function (event) {
     console.log('fetch');
+    event.responseEith(
+        //
+        //到Browser Cache 比對，成功會返回一個response物件
+        caches.match(event.request).then(function (response) {
+            //response有內容就直接回傳response
+            //response沒有內容就透過Internet去要
+            return response || fetch(event.request);
+        })
+    )
 })
