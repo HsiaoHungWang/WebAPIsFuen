@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = "cache-v3";
+﻿const CACHE_NAME = "cache-v4";
 const urlsToCatch = ['/', '/abc.css', '/xyz.css', '/index.html', '/sw.js'];
 self.addEventListener('install', function (event) {
     console.log('install');

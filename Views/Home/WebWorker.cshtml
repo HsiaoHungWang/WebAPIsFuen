@@ -18,7 +18,13 @@
     <script>
 		function sosucal1() {
 			//呼叫 Web Worker /js/sosu-worker.js
-			
+			const worker = new Worker('/js/sosu-worker.js');
+			const divResult = document.querySelector('#result');
+
+			worker.onmessage = function (event) {
+				//worker 透過 postMessag() 傳回的資料 event.data;
+				divResult.textContent = event.data;
+			}
 
 		}
 
