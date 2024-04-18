@@ -105,7 +105,7 @@
         })
         //儲存
         btnSave.addEventListener("click", async function () {    
-             localStorage.removeItem("drawing");
+           
             myImg.src = canvas.toDataURL("image/png");
 
             //上傳到伺服器
@@ -118,8 +118,15 @@
                 },
                 body: JSON.stringify({ imageBase64: base64String.split(',')[1] })
             })
-            const data = await response.text();
-            alert(data);
+            if (response.ok) {
+                const data = await response.text();
+                alert(data);
+
+                //移除localstorage中的資料
+                localStorage.removeItem("drawing");
+                //清除Canvas的內容
+                context.clearRect(0, 0, 600, 300);
+            }
 
         }, false);
         //清除
