@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Text;
@@ -169,6 +170,27 @@ namespace WebAPIsFuen.Controllers
 
             // return Content(uploadPath);
         }
+
+        public IActionResult DrawingUpload([FromBody] Base64ImageDto dto)
+        {
+            // 將 Base64 字串轉換成圖片檔案
+            if (dto.ImageBase64 != null)
+            {
+                var bytes = Convert.FromBase64String(dto.ImageBase64);
+
+                // 可以使用 Guid 或其他方式來產生唯一的檔名
+                var fileName = $"{Guid.NewGuid()}.png";
+
+                // 保存圖片檔案到伺服器上的指定路徑
+
+                string uploadPath = Path.Combine(_webHost.WebRootPath, "uploads", fileName);
+                System.IO.File.WriteAllBytes(uploadPath, bytes);
+            }
+
+
+            return Ok("圖片已接收");
+        }
+   
 
         public IActionResult Privacy()
         {
