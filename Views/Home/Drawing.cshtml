@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Drawing";
 }
 
@@ -17,15 +16,18 @@
     <input type="file" id="file1">
 </div>
 <canvas id="myCanvas" width="600" height="300"></canvas>
-<hr/>
+<hr />
 <input type="button" class="btn btn-primary" value="儲存" id="buttonSave" />
 <input type="button" class="btn btn-warning" value="清除" id="buttonClear" />
+<input type="button" class="btn btn-secondary" value="共筆開始" id="buttonStart" />
+<input type="button" class="btn btn-info" value="共筆結束" id="buttonStop" />
 <hr />
 <img id="img1" />
 @section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
     <script>
         const canvas = document.querySelector('#myCanvas'); //Canvas
-        const context = canvas.getContext('2d'); //繪圖物件 
+        const context = canvas.getContext('2d'); //繪圖物件
         let flag = false;
         const cw = document.querySelector('#range1'); //畫筆粗細
         const w = document.querySelector('#span1');
@@ -34,8 +36,10 @@
         const btnSave = document.querySelector('#buttonSave');
         const btnClear = document.querySelector('#buttonClear');
         const myImg = document.querySelector('#img1');
+        const btnStart = document.querySelector('#buttonStart');
+        const btnStop = document.querySelector('#buttonStop');
+        let connection = null;
 
-        
         //粗細 <input type="range"
         cw.addEventListener("input", event => { w.innerHTML = event.target.value });
 
@@ -46,10 +50,10 @@
 
             //todo 開始一個新路徑，產生後再使用繪圖指令來設定路徑。
             context.beginPath();
-            
+
             //todo 設定線條的顏色
             context.strokeStyle = c.value;
-           
+
             //todo 設定線條寬度
             context.lineWidth = cw.value;
 
@@ -58,25 +62,52 @@
             //使用event.offsetY 取得滑鼠的y軸座標點
             //canvas左上角為0,0
             context.moveTo(evt.offsetX, evt.offsetY);
-           
-           
+
+            if (connection) {
+                const data = {                  
+                    "mouse": "down",
+                    "color": c.value,
+                    "width": cw.value,
+                    "x": evt.offsetX,
+                    "y": evt.offsetY
+                };
+                //傳送到SignalR Server
+                connection.invoke("SendData", JSON.stringify(data));
+            }
+
+
         })
         canvas.addEventListener("mousemove", function (evt) {
             if (flag) {
-               // console.log(evt.offsetX, evt.offsetY);
+                // console.log(evt.offsetX, evt.offsetY);
 
                 //todo 從目前繪圖點畫一條直線到滑鼠點選的位置上
                 context.lineTo(evt.offsetX, evt.offsetY);
-              
+
                 //todo 畫出圖形的線條
                 context.stroke();
-             
+
+
+                if (connection) {
+
+                    const data = {                     
+                        "mouse": "move",
+                        "color": c.value,
+                        "width": cw.value,
+                        "x": evt.offsetX,
+                        "y": evt.offsetY
+                    };
+
+
+                    connection.invoke("SendData", JSON.stringify(data));
+                }
+
             }
         })
         canvas.addEventListener("mouseup", function (evt) {
             flag = false;
         })
-       
+
 
 
         theFile.addEventListener('change', function () {
@@ -89,7 +120,7 @@
 
                     //todo 將選取的圖,放大縮小後繪到canvas中
                     context.drawImage(imageObj, x, y, w, w);
-                   
+
                 }
             }
 
@@ -104,8 +135,8 @@
 
         })
         //儲存
-        btnSave.addEventListener("click", async function () {    
-           
+        btnSave.addEventListener("click", async function () {
+
             myImg.src = canvas.toDataURL("image/png");
 
             //上傳到伺服器
@@ -135,27 +166,71 @@
             //location.reload();
         }, false);
 
-        //
+        //離開此頁面時將資料Canvas中的內容存到localstorage中
         window.addEventListener('beforeunload', () => {
             localStorage.setItem("drawing", canvas.toDataURL("image/png"));
         })
+        //網頁載入時從localstorage中將資料讀進Canvas中
         window.addEventListener('load', () => {
-            const d = localStorage.getItem("drawing");          
+            const d = localStorage.getItem("drawing");
             if (d != null) {
                 let myDrawing = new Image();
                 myDrawing.src = d;
-                myDrawing.addEventListener('load', function () {
-                    console.log(myDrawing);
+                myDrawing.addEventListener('load', function () {                 
                     context.drawImage(myDrawing, 0, 0);
                 })
             }
-
-            
         })
+
+
+
+        //SignalR 建立連線
+        btnStart.addEventListener("click", () => {
+            //SingalR
+            //  connection = new signalR.HubConnectionBuilder().withUrl("/DrawingHub").build();
+            connection = new signalR.HubConnectionBuilder().configureLogging(signalR.LogLevel.Information).withUrl("/DrawingHub").build();
+
+
+            async function start() {
+                try {
+                    await connection.start();
+                    console.log("SignalR Connected.");
+                } catch (err) {
+                    console.log(err);
+                    setTimeout(start, 5000);
+                }
+            };
+
+            start();
+
+
+            //接收SignalR Server 傳過來的資料
+            connection.on("receiveData", (data) => {
+
+                const drawing = JSON.parse(data);
+
+                context.strokeStyle = drawing.color;
+                context.lineWidth = drawing.width;
+
+                if (drawing.mouse === "down") {
+                    context.beginPath();
+                    context.moveTo(drawing.x, drawing.y);
+                } else if (drawing.mouse === "move") {
+                    context.lineTo(drawing.x, drawing.y);
+                    context.stroke();
+                }
+                //}
+            })
+        })
+        //SignalR 中斷連線
+        btnStop.addEventListener('click', () => {
+            connection.stop();
+        })
+
     </script>
 }
 
-@section Styles{
+@section Styles {
     <style>
         #myCanvas {
             border: 1px solid green;
