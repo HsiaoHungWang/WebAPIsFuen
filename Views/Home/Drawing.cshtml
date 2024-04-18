@@ -104,8 +104,23 @@
 
         })
         //儲存
-        btnSave.addEventListener("click", function () {       
+        btnSave.addEventListener("click", async function () {    
+             localStorage.removeItem("drawing");
             myImg.src = canvas.toDataURL("image/png");
+
+            //上傳到伺服器
+            var base64String = canvas.toDataURL("image/png"); // 這裡放置你的Base64字串
+            // 發送 POST 請求到後端
+            const response = await fetch('@Url.Content("~/home/DrawingUpload")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ imageBase64: base64String.split(',')[1] })
+            })
+            const data = await response.text();
+            alert(data);
+
         }, false);
         //清除
         btnClear.addEventListener("click", function () {
